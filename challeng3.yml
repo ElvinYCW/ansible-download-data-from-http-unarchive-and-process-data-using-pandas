@@ -1,0 +1,20 @@
+---
+- hosts: localhost
+  tasks:   
+    - name: retrieve and unarchive the data from unversity
+      unarchive:
+        src: https://data.gov.sg/dataset/249f1149-1e04-40e2-81c6-bfab3bba5574/download
+        dest: ./
+        remote_src: yes
+    - name: retrieve and unarchive the data from the polytechnic
+      unarchive:
+        src: https://data.gov.sg/dataset/f6048a81-0f7b-436c-8bfa-ebe1bb42cfdc/download
+        dest: ./
+        remote_src: yes
+    - name: python script with pandas lib to retrieve data from csv file to gather total IT grads from university and polytechnic over the stipulated years
+      script: ./add_IT_grads_using_pandas_lib.py
+      args:
+        executable: python3
+      register: check_result
+    - debug:
+        var: check_result.stdout_lines
